@@ -90,7 +90,7 @@ module FTP
   # - #rename
   # - #delete
   #
-  class Client # < Protocol
+  class Client
     include OpenSSL
     include SSL
 
