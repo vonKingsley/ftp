@@ -22,7 +22,7 @@ MLSD
 ```yaml
 dependencies:
   ftp:
-    github: vonkingsley/ft
+    github: vonkingsley/ftp
 ```
 
 
