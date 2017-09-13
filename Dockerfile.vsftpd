@@ -1,0 +1,14 @@
+FROM bogem/ftp
+MAINTAINER Kingsley Lewis vonkingsley@gmail.com
+
+
+RUN mkdir /etc/ssl
+
+COPY spec/assets/certs/vsftpd_cert.pem /etc/ssl
+COPY spec/assets/certs/vsftpd_key.pem /etc/ssl
+
+RUN chmod 600 /etc/ssl/vsftpd_cert.pem
+RUN chmod 600 /etc/ssl/vsftpd_key.pem
+
+COPY spec/assets/vsftpd.conf /etc/vsftpd/vsftpd.conf
+

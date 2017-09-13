@@ -1,0 +1,5 @@
+*.DS_Store
+/doc/
+/lib/
+/bin/
+/.shards/

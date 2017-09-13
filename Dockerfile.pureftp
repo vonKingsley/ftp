@@ -1,0 +1,14 @@
+FROM stilliard/pure-ftpd
+
+ENV USER ftpuser
+ENV PASSWORD qwerty
+ENV FTP_PATH /home/ftpusers/
+ENV PUBLICHOST localhost
+
+CMD echo "$PASSWORD\n$PASSWORD" | pure-pw useradd $USER -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftpuser -d /home/ftpusers/$USER && /run.sh -c 30 -C 10 -l puredb:/etc/pure-ftpd/pureftpd.pdb -E -j -R -P $PUBLICHOST -p 30000:30059
+
+RUN mkdir -p /etc/ssl/private/
+COPY spec/assets/certs/pureftp_inclusive.pem /etc/ssl/private/pure-ftpd.pem
+RUN chmod 600 /etc/ssl/private/pure-ftpd.pem
+
+RUN echo 1 > /etc/pure-ftpd/conf/TLS
