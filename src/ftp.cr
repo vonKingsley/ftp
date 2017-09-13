@@ -312,7 +312,7 @@ module FTP
     private def start_tls_session(socket)
       hostname = @host || nil
       ssl_context = @ssl_context.not_nil!
-      ssl_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
+      #ssl_context.verify_mode = OpenSSL::SSL::VerifyMode::NONE
 
       ssl_socket = OpenSSL::SSL::Socket::Client.new(socket, context: ssl_context, sync_close: true, hostname: hostname)
       ssl_socket.sync_close = true
