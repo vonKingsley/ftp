@@ -667,7 +667,7 @@ module FTP
             bytes_read = file.read(data = Bytes.new(blocksize))
             break if bytes_read == 0
             conn.write(data[0, bytes_read])
-            yield(buf)
+            yield(data)
           end
           conn.close
           voidresp
@@ -723,7 +723,7 @@ module FTP
             else
               break
             end
-            conn.write(buf)
+            conn.write(buf.to_slice)
             yield(buf)
           end
           conn.close
@@ -889,15 +889,15 @@ module FTP
       if @resume
         begin
           rest_offset = size(remotefile)
-        rescue Net::FTPPermError
+        rescue FTPPermError
           rest_offset = nil
         end
       else
         rest_offset = nil
       end
-      f = open(localfile)
+      f = File.open(localfile)
       begin
-        f.binmode
+#        f.binmode
         if rest_offset
           storbinary("APPE #{remotefile}", f, blocksize, rest_offset, &block)
         else
@@ -937,7 +937,7 @@ module FTP
     # passing in the transmitted data one line at a time.
     #
     def put_text_file(localfile, remotefile = File.basename(localfile), &block) # :yield: line
-      f = open(localfile)
+      f = File.open(localfile)
       begin
         storlines("STOR #{remotefile}", f, &block)
       ensure
@@ -961,9 +961,9 @@ module FTP
     def put(localfile, remotefile = File.basename(localfile),
             blocksize = DEFAULT_BLOCKSIZE, &block)
       if @binary
-        putbinaryfile(localfile, remotefile, blocksize, &block)
+        put_binary_file(localfile, remotefile, blocksize, &block)
       else
-        puttextfile(localfile, remotefile, &block)
+        put_text_file(localfile, remotefile, &block)
       end
     end
 
